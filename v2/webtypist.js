@@ -148,7 +148,7 @@ const gTypist = (function(window, document, undefined) {
   ui.txtInput.focus();
 
   // emulate the keyboard layout
-  ui.txtInput.onkeyup = event => ui.keyboard.keyUp(event.code);
+  ui.txtInput.onkeyup = event => ui.keyboard.keyUp(event);
   ui.txtInput.onkeydown = event => {
     if (event.code.startsWith('F')
       || event.ctrlKey || event.metaKey || event.altKey) {
@@ -157,7 +157,7 @@ const gTypist = (function(window, document, undefined) {
     if (event.code === 'Tab') {
       layout.focus(); // make the Tab key great again
     } else {
-      onKeyDown(ui.keyboard.keyDown(event.code));
+      onKeyDown(ui.keyboard.keyDown(event));
     }
     return false;
   };
@@ -200,7 +200,8 @@ class State {
     fetch(`${keylayoutBaseURL}/${value}.json`)
       .then(response => response.json())
       .then(data => {
-        ui.keyboard.setKalamineLayout(data.layout, data.dead_keys,
+      	console.log(data);
+        ui.keyboard.setKeyboardLayout(data.keymap, data.deadkeys,
           data.geometry.replace('ERGO', 'ISO'));
         window.location.hash = value;
         // enable lessons that are compatible with this layout, hide all others
